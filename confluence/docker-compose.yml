@@ -1,9 +1,8 @@
 version: "3.7"
 
 services:
-
   confluence:
-    image: javachen/confluence-server:7.3.1
+    image: javachen/confluence-server:7.5.0-m62-ubuntu
     ports:
       - "8090:8090"
     volumes:
