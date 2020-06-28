@@ -1,18 +1,19 @@
-version: '3'
+version: '3.7'
 services:
   mysql:
     image: mysql:5.7
+    container_name: mysql
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
+      TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 123456
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
     ports:
-      - "3306:3306"
-    networks:
-      - traefik
+      - 3306:3306
     volumes:
-      - /data/volumes/mysql:/var/lib/mysql
-
-networks:
-  traefik:
-    external: true
+      - ./data:/var/lib/mysql

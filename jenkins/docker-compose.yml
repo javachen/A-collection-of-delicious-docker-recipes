@@ -1,10 +1,15 @@
-jenkins:
-  image: jenkins/jenkins:lts-alpine
-  ports:
-    - "8080:8080"
-    - "50000:50000"
-  volumes:
-    - ./data:/var/jenkins_home
-  environment:
-    - JAVA_OPTS=-Dhudson.footerURL=http://jenkins.easypi.pro
-  restart: always
+version: '3.7'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-alpine
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./data:/var/jenkins_home
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "gitlab.cocktail.com:192.168.56.141"
+      - "nexus.cocktail.com:192.168.56.141"
+    restart: always

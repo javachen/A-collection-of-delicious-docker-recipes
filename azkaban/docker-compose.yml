@@ -1,0 +1,38 @@
+version: '3'
+services:
+  mysql:
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: azkaban
+      MYSQL_USER: azkaban
+      MYSQL_PASSWORD: azkaban
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - mysql:/var/lib/mysql
+
+  executor:
+    image: javachen/azkaban-exec-server
+    restart: always
+    # 和服务名称保持一致
+    hostname: executor
+    environment:
+      AZKABAN_OPTS: "-Xmx2048m"
+    depends_on:
+      - mysql
+    ports:
+      - "12321:12321"  
+    volumes:
+      - /data/bi_etl:/data/bi_etl
+      - /data/ods:/data/ods
+
+  webserver:
+    image: javachen/azkaban-web-server
+    restart: always
+    environment:
+      AZKABAN_OPTS: "-Xmx512m"
+    depends_on:
+      - executor
+    ports:
+      - "8081:8081"
